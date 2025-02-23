@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import axios from "axios";
 
 const RegisterForm = () => {
+  const navigate = useNavigate(); // Initialize navigate
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -28,8 +30,11 @@ const RegisterForm = () => {
         "https://circle-22-auth.onrender.com/api/auth/register",
         formData
       );
-      setMessage("Registration Successful! Please log in.");
+      setMessage("Registration Successful! Redirecting to login...");
       setIsSuccess(true);
+
+      // ✅ Redirect to login after 2 seconds
+      setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
       setMessage(error.response?.data?.message || "Registration failed.");
       setIsSuccess(false);
@@ -82,9 +87,12 @@ const RegisterForm = () => {
 
         <p className="text-sm text-center mt-4">
           Already have an account?{" "}
-          <a href="/login" className="text-purple-400 hover:text-purple-500 transition">
+          <span
+            onClick={() => navigate("/login")}
+            className="text-purple-400 hover:text-purple-500 transition cursor-pointer"
+          >
             Login
-          </a>
+          </span>
         </p>
       </div>
     </div>
